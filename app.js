@@ -67,9 +67,12 @@ app.post('/sign-up', async (req, res, next) => {
         //return the response so the function finishes
         return res.render('sign-up-form', {errorMsg: 'Username already taken'});
     }
+    
+    let password = await bcrypt.hash(req.body.password, 10);
+    
     const user = new User({
         username: req.body.username,
-        password: req.body.password
+        password: password
     })
     .save()
     .then(success => res.redirect('/'))
