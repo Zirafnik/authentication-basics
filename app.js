@@ -32,11 +32,17 @@ passport.use(
                     return done(null, false, {message: 'Incorrect username'});
                 }
 
-                if(user.password !== password) {
-                    return done(null, false, {message: 'Incorrect password'});
-                }
-
-                return done(null, user);
+                //check password
+                bcrypt.compare(password, user.password)
+                    .then(res => {
+                        //passwords match
+                        if(res) {
+                            return done(null, user);
+                        //passwords do not match
+                        } else {
+                            return done(null, false, {message: 'Incorrect password'});
+                        }
+                    })
             })
             .catch(err => done(err));
     })
