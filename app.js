@@ -85,6 +85,14 @@ app.post('/sign-up', async (req, res, next) => {
     .catch(err => next(err));
 });
 
+app.get('/vip', (req, res, next) => {
+    if(req.isAuthenticated()) {
+        res.send('This is a VIP section only for authenticated users');
+    } else {
+        res.redirect('/');
+    }
+})
+
 app.post('/login', passport.authenticate('local', {successRedirect: '/', failureRedirect: '/'}));
 
 app.get('/logout', (req, res, next) => {
